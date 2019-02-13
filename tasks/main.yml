@@ -6,12 +6,6 @@
 
 - name: when swap is present
   block:
-    - debug:
-        var: isset_swapoff_images
-
-    - debug:
-        var: isset_swapoff_images.stdout_lines
-
     - name: disable swap
       command: swapoff -a
 
@@ -19,12 +13,12 @@
       file:
         path: "{{ item }}"
         state: absent
-      loop: "{{ set_swapoff_images.stdout_lines }}"
+      loop: "{{ isset_swapoff_images.stdout_lines }}"
 
     - name: disable swap in fstab
       mount:
         path: "{{ item }}"
         state: absent
-      loop: "{{ set_swapoff_images.stdout_lines }}"
+      loop: "{{ isset_swapoff_images.stdout_lines }}"
   when:
     - isset_swapoff_images.stdout_lines | length > 0
