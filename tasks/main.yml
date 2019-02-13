@@ -1,0 +1,24 @@
+---
+- name: obtain list of swap images
+  shell: "cat /proc/swaps | grep .img | awk '{print $1}'"
+  changed_when: False
+  register: isset_swapoff_images
+
+- name: when swap is present
+  block:
+    - name: disable swap
+      command: swapoff -a
+
+    - name: remove swap image
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop: isset_swapoff_images
+
+    - name: disable swap in fstab
+      mount:
+        path: "{{ item }}"
+        state: absent
+      loop: isset_swapoff_images
+  when:
+    - isset_swapoff_images | length > 0
