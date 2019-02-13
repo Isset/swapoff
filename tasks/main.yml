@@ -6,6 +6,12 @@
 
 - name: when swap is present
   block:
+    - debug:
+        var: isset_swapoff_images
+
+    - debug:
+        var: isset_swapoff_images.stdout_lines
+
     - name: disable swap
       command: swapoff -a
 
