@@ -21,4 +21,4 @@
         state: absent
       loop: isset_swapoff_images.stdout_lines
   when:
-    - isset_swapoff_images | length > 0
+    - isset_swapoff_images.stdout_lines | length > 0
