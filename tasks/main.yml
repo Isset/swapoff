@@ -17,7 +17,9 @@
 
     - name: disable swap in fstab
       mount:
-        path: "{{ item }}"
+        src: '{{ item }}'
+        path: none
+        fstype: swap
         state: absent
       loop: "{{ isset_swapoff_images.stdout_lines }}"
   when:
